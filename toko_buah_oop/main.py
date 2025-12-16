@@ -12,12 +12,12 @@ def tampilkan_menu():
 
 def tampilkan_daftar_buah():
     try:
-        with open('buku.txt', 'r') as file:
+        with open('buah.txt', 'r') as file:
             print("Daftar Buah Tersedia:")
             print("----------------------")
             for line in file:
                 nama, harga, stok = line.strip().split(',')
-                print(f"Nama: {nama}, Harga: {harga}, Stok: {stok}")
+                print(f"Nama: {nama}, Harga: Rp.{harga}, Stok: {stok} Kg")
     except FileNotFoundError:   # error handling jika daftar buah kosong
         print("Daftar buah kosong.")   
     input("Press Enter to continue...")  # jeda sebelum input perulangan baru
@@ -46,31 +46,33 @@ def tambah_buah():
             continue
 
         daftar_buah = buah_baru.Buah(nama, harga, stok)
-        print(f"Buah {nama} dengan harga {harga} dan stok {stok} telah ditambahkan.")
+        print(f"Buah {nama} dengan harga: Rp.{harga} dan stok {stok} Kg telah ditambahkan.")
         break
     input("Press Enter to continue...")  # jeda sebelum input perulangan baru
 
 def hapus_buah():
-    nama_buah = input("Masukkan nama buah yang akan dihapus: ")
-    try:
-        with open(buah_baru.txt, 'r') as file:
-            lines = file.readlines()
-            with open(buah_baru.txt, 'w') as file:
-                found = False
-                for line in lines:
-                    nama, harga, stok = line.strip().split(',')
-                    if nama.lower() != nama_buah.lower():
-                        file.write(line)
+    while True:
+        nama_buah = input("Masukkan nama buah yang akan dihapus: ")
+        try:
+            with open('buah.txt', 'r') as file:
+                lines = file.readlines()
+                with open('buah.txt', 'w') as file:
+                    found = False
+                    for line in lines:
+                        nama, harga, stok = line.strip().split(',')
+                        if nama.lower() != nama_buah.lower():
+                            file.write(line)
+                        else:
+                            found = True
+                    if found:
+                        print(f"Buah {nama_buah} dengan harga: Rp.{harga} dan stok {stok} Kg telah dihapus dari daftar.")
                     else:
-                        found = True
-                if found:
-                    print(f"Buah {nama_buah} telah dihapus dari daftar.")
-                else:
-                    print(f"Buah {nama_buah} tidak ditemukan dalam daftar.")
-    except FileNotFoundError:
-        print("Daftar buah kosong.")
+                        print(f"Buah {nama_buah} tidak ditemukan dalam daftar.")                    
+        except FileNotFoundError:
+            print("Daftar buah kosong.")
+        break
+    input("Press Enter to continue...")  # jeda sebelum input perulangan baru
 
-        
 while True:
     tampilkan_menu()
     pilihan = input("Pilih menu (1-5): ")
@@ -86,6 +88,8 @@ while True:
         print("Fitur ubah stok buah belum tersedia.")
         input("Press Enter to continue...")  # jeda sebelum input perulangan baru
     elif pilihan == '5':
+        hapus_buah()
+    elif pilihan == '6':
         print("Terima kasih telah menggunakan Toko Buah OOP.")
         break
     else:
